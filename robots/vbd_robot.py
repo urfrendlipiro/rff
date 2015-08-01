@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+
 __author__ = 'urfrendlipiro'
 
 print("hello from vbd_robot")
