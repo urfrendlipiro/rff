@@ -19,20 +19,7 @@ def set_info(player_history_init, year):
     #        print(str(player))
     #        first_pos[player.position] = False
 
-
-
-
-
-def get_acceptable_players(available_players, team):
-    None
-
-"""
-    get a missed game score for all players and then remove players don't meet your risk
-    threshold. select the player with the highest ADP that meets your risk threshold
-
-"""
-
-def get_top_player(available_players, team):
+def get_missed_game_score(available_players, team):
     global current_year
     # we don't want to accidentally return a player for a filled position, so get a list of open slots
     open_positions = []
@@ -97,10 +84,22 @@ def get_top_player(available_players, team):
                 # create a dict with available players and their missed game scores
                 all_available_missed_games_scores[available_players[i]] = missed_game_score
 
+    return all_available_missed_games_scores
 
-    # now, we'll remove all the players that have a score less than x%
+
+
+"""
+    get a missed game score for all players and then remove players don't meet your risk
+    threshold. select the player with the highest ADP that meets your risk threshold
+
+"""
+
+def get_top_player(available_players, team):
+    all_scores = get_missed_game_score(available_players, team)
+
+    # now that we have our data, we'll remove all the players that have a score less than x%
     risk_aversion = .85  #change this based on how risk averse you are. higher = more risk averse
-    acceptable_players = {k: v for k, v in all_available_missed_games_scores.items() if k > risk_aversion}
+    acceptable_players = {k: v for k, v in all_scores.items() if k > risk_aversion}
     top_player_id = min(acceptable_players)
 
     # return the id/adp for the top player. This is who we'll draft
