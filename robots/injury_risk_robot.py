@@ -91,11 +91,12 @@ def get_top_player(available_players, team):
     all_scores = get_missed_game_score(available_players, team)
 
     # now that we have our data, we'll remove all the players that have a score less than x%
-    risk_aversion = .85  #change this based on how risk averse you are. higher = more risk averse
-    acceptable_players = {k: v for k, v in all_scores.items() if k > risk_aversion}
+    risk_aversion = .7  #change this based on how risk averse you are. higher = more risk averse
+    acceptable_players = {k: v for k, v in all_scores.items() if v > risk_aversion}
     top_player_id = min(acceptable_players)
 
     # return the id/adp for the top player. This is who we'll draft
+    #print("We are selecting %s. His gp score is %s" %(top_player_id,acceptable_players[top_player_id]))
     return top_player_id
 
 def draft_player(available_players, team):
