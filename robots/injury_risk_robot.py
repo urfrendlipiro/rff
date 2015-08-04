@@ -17,7 +17,13 @@ def set_info(player_history_init, year):
     #for player in player_history:
     #    if first_pos[player.position]:
     #        print(str(player))
-    #        first_pos[player.position] = False
+    #        first_pos[player.position] = False\
+
+"""
+    our score calculates the percentage of games played each year and then weighs the most recent
+    years more heavily.
+    example: if player played 3 years, last year is worth 3, year before 2, and his rookie year is 1
+"""
 
 def get_missed_game_score(available_players, team):
     global current_year
@@ -27,17 +33,12 @@ def get_missed_game_score(available_players, team):
         if team.is_position_open(i):
             open_positions.append(i)
 
-    # run through the list of available players and find their injury risk
+    # run through the list of available players and find the percentage of games played over their career
     all_available_missed_games_scores = {}
     for i in range(0, len(available_players)):
         # Access the players projections as well as past yearly and weekly stats to make your decision
         player = player_history[available_players[i]]
         projection = player.yearly_data["Projected"].season_totals
-        """
-        our score calculates the percentage of games played each year and then weights the most recent
-        years more heavily.
-        example: if player played 3 years, last year is worth 3, year before 2, and his rookie year is 1
-        """
 
         # skip players at a position that's already filled
         if player.position in open_positions:
@@ -85,14 +86,6 @@ def get_missed_game_score(available_players, team):
                 all_available_missed_games_scores[available_players[i]] = missed_game_score
 
     return all_available_missed_games_scores
-
-
-
-"""
-    get a missed game score for all players and then remove players don't meet your risk
-    threshold. select the player with the highest ADP that meets your risk threshold
-
-"""
 
 def get_top_player(available_players, team):
     all_scores = get_missed_game_score(available_players, team)
